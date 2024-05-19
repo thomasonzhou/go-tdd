@@ -17,6 +17,13 @@ func TestSum(t *testing.T) {
 }
 
 func TestSumAllTails(t *testing.T) {
+
+	assertSlicesEqual := func(t *testing.T, s1, s2 []int) {
+		t.Helper()
+		if !slices.Equal(s1, s2) {
+			t.Errorf("got %v want %v", s1, s2)
+		}
+	}
 	t.Run("sum two slices of variable size", func(t *testing.T) {
 		s1 := []int{0, 1, 1, 2, 3, 5, 8, 13}
 		s2 := []int{2, 4, 8, 16, 32}
@@ -24,17 +31,13 @@ func TestSumAllTails(t *testing.T) {
 		got := SumAllTails(s1, s2)
 
 		want := []int{33, 60}
-		if !slices.Equal(got, want) {
-			t.Errorf("got %v want %v given, %v %v", got, want, s1, s2)
-		}
+		assertSlicesEqual(t, got, want)
 	})
 	t.Run("safely sum empty slice", func(t *testing.T) {
 		emptySlice := []int{}
 		got := SumAllTails(emptySlice)
 		want := []int{0}
 
-		if !slices.Equal(got, want) {
-			t.Errorf("got %v want %v given, %v", got, want, emptySlice)
-		}
+		assertSlicesEqual(t, got, want)
 	})
 }
