@@ -33,6 +33,17 @@ func TestAdd(t *testing.T) {
 	})
 }
 
+func TestUpdate(t *testing.T) {
+	word := "りんご"
+	newDefinition := "Apple in japanese"
+	dict := Dictionary{word: "赤い果物"}
+	err := dict.Update(word, newDefinition)
+	assertError(err, nil, t)
+
+	definition, err := dict.Search(word)
+	assertStringsEqual(newDefinition, definition, t)
+}
+
 func assertDefinition(dict Dictionary, word, definition string, t *testing.T) {
 	t.Helper()
 	got, err := dict.Search(word)
