@@ -16,14 +16,14 @@ func TestSum(t *testing.T) {
 	})
 }
 
-func TestSumAll(t *testing.T) {
+func TestSumAllTails(t *testing.T) {
 	t.Run("sum two slices of variable size", func(t *testing.T) {
 		s1 := []int{0, 1, 1, 2, 3, 5, 8, 13}
 		s2 := []int{2, 4, 8, 16, 32}
 
-		got := SumAll(s1, s2)
+		got := SumAllTails(s1, s2)
 
-		want := []int{33, 62}
+		want := []int{33, 60}
 		if !slices.Equal(got, want) {
 			t.Errorf("got %v want %v given, %v %v", got, want, s1, s2)
 		}
