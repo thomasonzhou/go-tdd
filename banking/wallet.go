@@ -1,6 +1,9 @@
 package banking
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Wallet struct {
 	balance Bitcoin
@@ -14,6 +17,14 @@ func (w *Wallet) Deposit(amount Bitcoin) {
 
 func (w *Wallet) Balance() Bitcoin {
 	return w.balance
+}
+
+func (w *Wallet) Withdraw(amount Bitcoin) error {
+	if amount > w.balance {
+		return errors.New("Not enough money bud")
+	}
+	w.balance -= amount
+	return nil
 }
 
 func (b Bitcoin) String() string {
