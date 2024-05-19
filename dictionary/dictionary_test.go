@@ -12,13 +12,28 @@ func TestSearch(t *testing.T) {
 
 	t.Run("unknown word", func(t *testing.T) {
 		_, err := dict.Search("unknown")
-		want := "could not find the word"
-
-		if err == nil {
-			t.Fatal("expected an error but didn't get one")
-		}
-		assertStringsEqual(want, err.Error(), t)
+		newFunction(err, ErrNotFound, t)
 	})
+}
+
+func TestAdd(t *testing.T) {
+	dict := Dictionary{}
+
+	dict.Add("日本語", "The japanese language")
+	got, err := dict.Search("日本語")
+	if err != nil {
+		t.Fatal("should find word but didn't", err)
+	}
+
+	assertStringsEqual("The japanese language", got, t)
+
+}
+
+func newFunction(err, want error, t *testing.T) {
+	t.Helper()
+	if err != want {
+		t.Errorf("expected an error but didn't get one")
+	}
 }
 
 func assertStringsEqual(s1, s2 string, t *testing.T) {
