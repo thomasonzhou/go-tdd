@@ -1,13 +1,15 @@
 package banking
 
 type Wallet struct {
-	balance int
+	balance Bitcoin
 }
 
-func (w *Wallet) Deposit(amount int) {
+type Bitcoin int
+
+func (w *Wallet) Deposit(amount Bitcoin) {
 	w.balance += amount
 }
 
-func (w *Wallet) Balance() int {
+func (w *Wallet) Balance() Bitcoin {
 	return w.balance
 }
