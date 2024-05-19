@@ -18,9 +18,13 @@ var ErrWordExists = errors.New("word already in dictionary")
 
 func (d Dictionary) Add(word, definition string) error {
 	_, err := d.Search(word)
-	if err == nil {
+	switch err {
+	case ErrNotFound:
+		d[word] = definition
+	case nil:
 		return ErrWordExists
+	default:
+		return err
 	}
-	d[word] = definition
 	return nil
 }
