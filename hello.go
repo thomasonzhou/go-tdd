@@ -4,17 +4,25 @@ import "fmt"
 
 const englishGreeting = "Hello, "
 const frenchGreeting = "Bonjour, "
+const spanishGreeting = "Hola, "
 
 const french = "French"
+const spanish = "Spanish"
 
 func Hello(s, language string) string {
 	if s == "" {
 		s = "世界"
 	}
-	if language == french {
-		return frenchGreeting + s
+
+	greeting := englishGreeting
+	switch language {
+	case spanish:
+		greeting = spanishGreeting
+	case french:
+		greeting = frenchGreeting
 	}
-	return englishGreeting + s
+
+	return greeting + s
 }
 
 func main() {
