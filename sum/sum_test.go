@@ -28,4 +28,13 @@ func TestSumAllTails(t *testing.T) {
 			t.Errorf("got %v want %v given, %v %v", got, want, s1, s2)
 		}
 	})
+	t.Run("safely sum empty slice", func(t *testing.T) {
+		emptySlice := []int{}
+		got := SumAllTails(emptySlice)
+		want := []int{0}
+
+		if !slices.Equal(got, want) {
+			t.Errorf("got %v want %v given, %v", got, want, emptySlice)
+		}
+	})
 }
