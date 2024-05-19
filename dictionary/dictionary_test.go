@@ -34,14 +34,24 @@ func TestAdd(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	word := "りんご"
-	newDefinition := "Apple in japanese"
-	dict := Dictionary{word: "赤い果物"}
-	err := dict.Update(word, newDefinition)
-	assertError(err, nil, t)
+	t.Run("existing word", func(t *testing.T) {
+		word := "りんご"
+		newDefinition := "Apple in japanese"
+		dict := Dictionary{word: "赤い果物"}
+		err1 := dict.Update(word, newDefinition)
+		assertError(err1, nil, t)
 
-	definition, err := dict.Search(word)
-	assertStringsEqual(newDefinition, definition, t)
+		definition, err2 := dict.Search(word)
+		assertError(err2, nil, t)
+		assertStringsEqual(newDefinition, definition, t)
+	})
+
+	t.Run("new word", func(t *testing.T) {
+		dict := Dictionary{}
+
+		err := dict.Update("doesn't exist", "doesn't matter")
+		assertError(err, ErrWordDoesNotExist, t)
+	})
 }
 
 func assertDefinition(dict Dictionary, word, definition string, t *testing.T) {
