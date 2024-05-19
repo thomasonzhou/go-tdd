@@ -14,6 +14,13 @@ func (d Dictionary) Search(word string) (string, error) {
 	return definition, nil
 }
 
-func (d Dictionary) Add(word, definition string) {
+var ErrWordExists = errors.New("word already in dictionary")
+
+func (d Dictionary) Add(word, definition string) error {
+	_, err := d.Search(word)
+	if err == nil {
+		return ErrWordExists
+	}
 	d[word] = definition
+	return nil
 }

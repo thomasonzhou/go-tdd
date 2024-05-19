@@ -17,18 +17,29 @@ func TestSearch(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	dict := Dictionary{}
-
-	dict.Add("日本語", "The japanese language")
-	assertDefinition(dict, "日本語", "The japanese language", t)
-
+	t.Run("new word", func(t *testing.T) {
+		dict := Dictionary{}
+		err := dict.Add("日本語", "The japanese language")
+		assertError(err, nil, t)
+		assertDefinition(dict, "日本語", "The japanese language", t)
+	})
+	t.Run("existing word", func(t *testing.T) {
+		word := "Français"
+		definition := "The french language"
+		dict := Dictionary{word: definition}
+		err := dict.Add(word, "Le langue des francophones")
+		assertError(err, ErrWordExists, t)
+		assertDefinition(dict, word, definition, t)
+	})
 }
 
 func assertDefinition(dict Dictionary, word, definition string, t *testing.T) {
+	t.Helper()
 	got, err := dict.Search(word)
 	if err != nil {
 		t.Fatal("should find word but didn't", err)
 	}
+
 	assertStringsEqual(definition, got, t)
 }
 
