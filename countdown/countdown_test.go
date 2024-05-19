@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestCountdown(t *testing.T) {
@@ -37,4 +38,16 @@ Go!`
 			t.Errorf("incorrect order of calls to sleeper, want %v got %v", want, spySleepPrinter.Calls)
 		}
 	})
+}
+
+func TestConfigurableSleeper(t *testing.T) {
+	sleepTime := 22 * time.Second
+	spyTime := &SpyTime{}
+	configSleeper := &ConfigurableSleeper{sleepTime, spyTime.Sleep}
+
+	configSleeper.Sleep()
+
+	if spyTime.durationSlept != sleepTime {
+		t.Errorf("should have slept for %v but slept for %v", sleepTime, spyTime.durationSlept)
+	}
 }
