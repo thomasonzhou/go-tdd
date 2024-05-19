@@ -14,15 +14,21 @@ func Hello(s, language string) string {
 		s = "世界"
 	}
 
-	greeting := englishGreeting
+	greeting := getGreeting(language)
+
+	return greeting + s
+}
+
+func getGreeting(language string) (greeting string) {
 	switch language {
 	case spanish:
 		greeting = spanishGreeting
 	case french:
 		greeting = frenchGreeting
+	default:
+		greeting = englishGreeting
 	}
-
-	return greeting + s
+	return greeting
 }
 
 func main() {
