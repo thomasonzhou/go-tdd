@@ -54,6 +54,18 @@ func TestUpdate(t *testing.T) {
 	})
 }
 
+func TestDelete(t *testing.T) {
+	word := "golang"
+	dict := Dictionary{word: "a fun language made by people at Google"}
+	dict.Delete(word)
+
+	_, err := dict.Search(word)
+	if err != ErrNotFound {
+		t.Errorf("Expected %q to be deleted", word)
+	}
+
+}
+
 func assertDefinition(dict Dictionary, word, definition string, t *testing.T) {
 	t.Helper()
 	got, err := dict.Search(word)
