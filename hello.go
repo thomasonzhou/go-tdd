@@ -2,15 +2,21 @@ package main
 
 import "fmt"
 
-const englishGreeting = "Hello"
+const englishGreeting = "Hello, "
+const frenchGreeting = "Bonjour, "
 
-func Hello(s string) string {
+const french = "French"
+
+func Hello(s, language string) string {
 	if s == "" {
 		s = "世界"
 	}
-	return englishGreeting + " " + s
+	if language == french {
+		return frenchGreeting + s
+	}
+	return englishGreeting + s
 }
 
 func main() {
-	fmt.Println(Hello("世界"))
+	fmt.Println(Hello("世界", ""))
 }

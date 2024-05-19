@@ -4,15 +4,20 @@ import "testing"
 
 func TestHello(t *testing.T) {
 	t.Run("custom name in greeting", func(t *testing.T) {
-		got := Hello("世界")
-		want := "Hello 世界"
+		got := Hello("世界", "")
+		want := "Hello, 世界"
 		assertStringEqual(t, got, want)
 	})
 	t.Run("no name prints default greeting", func(t *testing.T) {
-		got := Hello("")
-		want := "Hello 世界"
+		got := Hello("", "")
+		want := "Hello, 世界"
 		assertStringEqual(t, got, want)
 
+	})
+	t.Run("in French", func(t *testing.T) {
+		got := Hello("Robespierre", "French")
+		want := "Bonjour, Robespierre"
+		assertStringEqual(t, got, want)
 	})
 }
 
