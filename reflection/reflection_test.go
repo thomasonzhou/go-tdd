@@ -38,6 +38,21 @@ func TestReflection(t *testing.T) {
 			Person{"Ben", Profile{78, "Paris"}},
 			[]string{"Ben", "Paris"},
 		},
+		{
+			"pointers to structs",
+			&Profile{1000, "Japan"},
+			[]string{"Japan"},
+		},
+		{
+			"pure string variable",
+			"what",
+			[]string{"what"},
+		},
+		{
+			"pure non-string variable",
+			false,
+			[]string{},
+		},
 	}
 
 	for _, test := range cases {
