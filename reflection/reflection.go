@@ -15,9 +15,13 @@ func walk(x interface{}, fn func(string)) {
 	case reflect.Struct:
 		valueCount = value.NumField()
 		getField = value.Field
-	case reflect.Slice:
+	case reflect.Slice, reflect.Array:
 		valueCount = value.Len()
 		getField = value.Index
+	case reflect.Map:
+		for _, key := range value.MapKeys() {
+			walk(value.MapIndex(key).Interface(), fn)
+		}
 	}
 	for i := 0; i < valueCount; i++ {
 		walk(getField(i).Interface(), fn)

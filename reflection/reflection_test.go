@@ -73,6 +73,22 @@ func TestReflection(t *testing.T) {
 			false,
 			[]string{},
 		},
+		{
+			"arrays",
+			[2]Profile{
+				{33, "London"},
+				{34, "Paris"},
+			},
+			[]string{"London", "Paris"},
+		},
+		{
+			"maps",
+			map[int]string{
+				4:  "working hard",
+				88: "lucky",
+			},
+			[]string{"working hard", "lucky"},
+		},
 	}
 
 	for _, test := range cases {
