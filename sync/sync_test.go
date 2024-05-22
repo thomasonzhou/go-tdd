@@ -7,7 +7,7 @@ import (
 
 func TestSync(t *testing.T) {
 	t.Run("count to 3", func(t *testing.T) {
-		counter := Counter{}
+		counter := NewCounter()
 		counter.Inc()
 		counter.Inc()
 		counter.Inc()
@@ -16,7 +16,7 @@ func TestSync(t *testing.T) {
 	})
 
 	t.Run("concurrent counting", func(t *testing.T) {
-		counter := Counter{}
+		counter := NewCounter()
 		wantCount := 999
 
 		var wg sync.WaitGroup
@@ -35,7 +35,7 @@ func TestSync(t *testing.T) {
 
 }
 
-func assertCount(counter Counter, want int, t *testing.T) {
+func assertCount(counter *Counter, want int, t *testing.T) {
 	if counter.Value() != want {
 		t.Errorf("got %d wanted %d", counter.Value(), want)
 	}
