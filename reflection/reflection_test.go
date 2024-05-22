@@ -15,6 +15,11 @@ type Person struct {
 	Profile Profile
 }
 
+type Language struct {
+	Ability int
+	Name    string
+}
+
 func TestReflection(t *testing.T) {
 	cases := []struct {
 		Name          string
@@ -47,6 +52,21 @@ func TestReflection(t *testing.T) {
 			"pure string variable",
 			"what",
 			[]string{"what"},
+		},
+		{
+			"non string slices",
+			[]int{2, 3, 5, 7},
+			[]string{},
+		},
+		{
+			"struct slices",
+			[]Language{
+				Language{1, "日本語"},
+				Language{3, "Français"},
+				Language{2, "中文"},
+			},
+			[]string{
+				"日本語", "Français", "中文"},
 		},
 		{
 			"pure non-string variable",
