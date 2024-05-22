@@ -61,9 +61,9 @@ func TestReflection(t *testing.T) {
 		{
 			"struct slices",
 			[]Language{
-				Language{1, "日本語"},
-				Language{3, "Français"},
-				Language{2, "中文"},
+				{1, "日本語"},
+				{3, "Français"},
+				{2, "中文"},
 			},
 			[]string{
 				"日本語", "Français", "中文"},

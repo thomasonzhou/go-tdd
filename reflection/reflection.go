@@ -4,26 +4,23 @@ import "reflect"
 
 // call fn on each attribute of type string in x
 func walk(x interface{}, fn func(string)) {
-	val := getValue(x)
+	value := getValue(x)
 
-	switch val.Kind() {
+	valueCount := 0
+	var getField func(int) reflect.Value
+
+	switch value.Kind() {
 	case reflect.String:
 		fn(x.(string))
 	case reflect.Struct:
-		for i := 0; i < val.NumField(); i++ {
-			field := val.Field(i)
-
-			switch field.Kind() {
-			case reflect.String:
-				fn(field.String())
-			case reflect.Struct:
-				walk(field.Interface(), fn)
-			}
-		}
+		valueCount = value.NumField()
+		getField = value.Field
 	case reflect.Slice:
-		for i := 0; i < val.Len(); i++ {
-			walk(val.Index(i).Interface(), fn)
-		}
+		valueCount = value.Len()
+		getField = value.Index
+	}
+	for i := 0; i < valueCount; i++ {
+		walk(getField(i).Interface(), fn)
 	}
 }
 
