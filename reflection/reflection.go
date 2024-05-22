@@ -6,26 +6,35 @@ import "reflect"
 func walk(x interface{}, fn func(string)) {
 	value := getValue(x)
 
-	valueCount := 0
-	var getField func(int) reflect.Value
+	walkValue := func(value reflect.Value) {
+		walk(value.Interface(), fn)
+	}
 
 	switch value.Kind() {
 	case reflect.String:
 		fn(x.(string))
 	case reflect.Struct:
-		valueCount = value.NumField()
-		getField = value.Field
+		for i := 0; i < value.NumField(); i++ {
+			walkValue(value.Field(i))
+		}
 	case reflect.Slice, reflect.Array:
-		valueCount = value.Len()
-		getField = value.Index
+		for i := 0; i < value.Len(); i++ {
+			walkValue(value.Index(i))
+		}
 	case reflect.Map:
 		for _, key := range value.MapKeys() {
-			walk(value.MapIndex(key).Interface(), fn)
+			walkValue(value.MapIndex(key))
+		}
+	case reflect.Chan:
+		for {
+			if v, ok := value.Recv(); ok {
+				walkValue(v)
+			} else {
+				break
+			}
 		}
 	}
-	for i := 0; i < valueCount; i++ {
-		walk(getField(i).Interface(), fn)
-	}
+
 }
 
 func getValue(x interface{}) reflect.Value {

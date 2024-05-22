@@ -81,14 +81,6 @@ func TestReflection(t *testing.T) {
 			},
 			[]string{"London", "Paris"},
 		},
-		{
-			"maps",
-			map[int]string{
-				4:  "working hard",
-				88: "lucky",
-			},
-			[]string{"working hard", "lucky"},
-		},
 	}
 
 	for _, test := range cases {
@@ -100,9 +92,54 @@ func TestReflection(t *testing.T) {
 				got = append(got, input)
 			})
 			if !slices.Equal(got, test.ExpectedCalls) {
-				t.Errorf("want %v got %v", test.ExpectedCalls, got)
+				t.Errorf("got %v wanted %v", got, test.ExpectedCalls)
 			}
 		})
 	}
 
+	t.Run("with maps", func(t *testing.T) {
+
+		mp := map[int]string{
+			4:  "working hard",
+			88: "lucky",
+		}
+		var got []string
+
+		walk(mp, func(s string) {
+			got = append(got, s)
+		})
+
+		assertContains("working hard", got, t)
+		assertContains("lucky", got, t)
+	})
+
+	t.Run("with channels", func(t *testing.T) {
+		ch := make(chan Language)
+		go func() {
+			ch <- Language{1, "日本語"}
+			ch <- Language{3, "Français"}
+			ch <- Language{2, "中文"}
+			close(ch)
+		}()
+
+		var got []string
+		want := []string{"日本語", "Français", "中文"}
+		walk(ch, func(s string) {
+			got = append(got, s)
+		})
+
+		if !slices.Equal(got, want) {
+			t.Errorf("got %v wanted %v", got, want)
+		}
+	})
+}
+
+func assertContains(want string, got []string, t *testing.T) {
+	t.Helper()
+	for i := range got {
+		if got[i] == want {
+			return
+		}
+	}
+	t.Errorf("expected %q to be in %v", want, got)
 }
