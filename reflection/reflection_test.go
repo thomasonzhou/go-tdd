@@ -91,9 +91,7 @@ func TestReflection(t *testing.T) {
 			walk(test.Input, func(input string) {
 				got = append(got, input)
 			})
-			if !slices.Equal(got, test.ExpectedCalls) {
-				t.Errorf("got %v wanted %v", got, test.ExpectedCalls)
-			}
+			assertSlicesEqual(got, test.ExpectedCalls, t)
 		})
 	}
 
@@ -128,10 +126,29 @@ func TestReflection(t *testing.T) {
 			got = append(got, s)
 		})
 
-		if !slices.Equal(got, want) {
-			t.Errorf("got %v wanted %v", got, want)
-		}
+		assertSlicesEqual(got, want, t)
 	})
+
+	t.Run("with function", func(t *testing.T) {
+		testFunc := func() (Language, Person) {
+			return Language{5, "English"}, Person{"Feynman", Profile{69, "New York City"}}
+		}
+
+		want := []string{"English", "Feynman", "New York City"}
+		var got []string
+
+		walk(testFunc, func(s string) {
+			got = append(got, s)
+		})
+		assertSlicesEqual(got, want, t)
+	})
+}
+
+func assertSlicesEqual(got, want []string, t *testing.T) {
+	t.Helper()
+	if !slices.Equal(got, want) {
+		t.Errorf("got %v wanted %v", got, want)
+	}
 }
 
 func assertContains(want string, got []string, t *testing.T) {
