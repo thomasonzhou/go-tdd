@@ -2,6 +2,7 @@ package context
 
 import (
 	"context"
+	"errors"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -40,11 +41,6 @@ func (s *SpyStore) Fetch(ctx context.Context) (string, error) {
 		return res, nil
 	}
 }
-
-// func (s *SpyStore) Cancel() {
-// 	s.cancelled = true
-// }
-
 func TestServer(t *testing.T) {
 	t.Run("strings equal", func(t *testing.T) {
 		data := "Bonjour, 世界"
@@ -59,37 +55,43 @@ func TestServer(t *testing.T) {
 		if response.Body.String() != data {
 			t.Errorf("got %q wanted %q", response.Body.String(), data)
 		}
-		// store.assertStoreWasCancelled()
 	})
 
-	// t.Run("cancel if Cancel called", func(t *testing.T) {
-	// 	data := "houston has a problem"
-	// 	store := &SpyStore{response: data, t: t}
-	// 	server := Server(store)
+	t.Run("cancel if Cancel called", func(t *testing.T) {
+		data := "houston has a problem"
+		store := &SpyStore{response: data, t: t}
+		server := Server(store)
 
-	// 	request := httptest.NewRequest(http.MethodGet, "/", nil)
-	// 	cancellingCtx, cancel := context.WithCancel(request.Context())
-	// 	time.AfterFunc(7*time.Millisecond, cancel)
-	// 	request = request.WithContext(cancellingCtx)
+		request := httptest.NewRequest(http.MethodGet, "/", nil)
 
-	// 	response := httptest.NewRecorder()
+		cancellingCtx, cancel := context.WithCancel(request.Context())
+		time.AfterFunc(1*time.Millisecond, cancel)
+		request = request.WithContext(cancellingCtx)
 
-	// 	server.ServeHTTP(response, request)
+		response := &SpyResponseWriter{}
 
-	// 	store.assertStoreCancelled()
-	// })
+		server.ServeHTTP(response, request)
+
+		if response.written {
+			t.Error("a response should not have been written")
+		}
+	})
 }
 
-// func (s *SpyStore) assertStoreCancelled() {
-// 	s.t.Helper()
-// 	if !s.cancelled {
-// 		s.t.Error("expected store to be cancelled")
-// 	}
-// }
+type SpyResponseWriter struct {
+	written bool
+}
 
-// func (s *SpyStore) assertStoreWasCancelled() {
-// 	s.t.Helper()
-// 	if s.cancelled {
-// 		s.t.Error("store is not supposed to be cancelled")
-// 	}
-// }
+func (s *SpyResponseWriter) Header() http.Header {
+	s.written = true
+	return nil
+}
+
+func (s *SpyResponseWriter) Write([]byte) (int, error) {
+	s.written = true
+	return 0, errors.New("not implemented")
+}
+
+func (s *SpyResponseWriter) WriteHeader(statusCode int) {
+	s.written = true
+}
