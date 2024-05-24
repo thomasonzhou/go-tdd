@@ -36,9 +36,7 @@ func TestServer(t *testing.T) {
 		if response.Body.String() != data {
 			t.Errorf("got %q wanted %q", response.Body.String(), data)
 		}
-		if store.cancelled {
-			t.Error("store is not supposed to be cancelled")
-		}
+		assertStoreWasCancelled(store, t)
 
 	})
 
@@ -56,8 +54,19 @@ func TestServer(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
-		if !store.cancelled {
-			t.Error("expected store to be cancelled")
-		}
+		assertStoreCancelled(store, t)
 	})
+}
+
+func assertStoreCancelled(store *SpyStore, t *testing.T) {
+	if !store.cancelled {
+		t.Error("expected store to be cancelled")
+	}
+}
+
+func assertStoreWasCancelled(store *SpyStore, t *testing.T) {
+	t.Helper()
+	if store.cancelled {
+		t.Error("store is not supposed to be cancelled")
+	}
 }
