@@ -23,14 +23,24 @@ var allRomanNumerals = []RomanNumeral{
 	{1, "I"},
 }
 
-func intToRoman(arabicNum int) string {
-
+func arabicToRoman(arabic int) string {
 	var result strings.Builder
 	for _, numeral := range allRomanNumerals {
-		for arabicNum >= numeral.Value {
-			arabicNum -= numeral.Value
+		for arabic >= numeral.Value {
+			arabic -= numeral.Value
 			result.WriteString(numeral.Symbol)
 		}
 	}
 	return result.String()
+}
+
+func romanToArabic(roman string) (arabic int) {
+	arabic = 0
+	for _, numeral := range allRomanNumerals {
+		for strings.HasPrefix(roman, numeral.Symbol) {
+			arabic += numeral.Value
+			roman = strings.TrimPrefix(roman, numeral.Symbol)
+		}
+	}
+	return arabic
 }
