@@ -8,7 +8,7 @@ import (
 )
 
 var cases = []struct {
-	Arabic int
+	Arabic uint16
 	Roman  string
 }{
 	{1, "I"},
@@ -57,15 +57,14 @@ func TestRomanToArabic(t *testing.T) {
 		description := fmt.Sprintf("%v to %q", test.Arabic, test.Roman)
 		t.Run(description, func(t *testing.T) {
 			got := RomanToArabic(test.Roman)
-			assertIntEqual(got, test.Arabic, t)
+			assertUInt16Equal(got, test.Arabic, t)
 		})
 	}
 }
 
-func TestConversionProperties(t *testing.T) {
-	assertion := func(arabic int) bool {
-
-		if arabic < 0 || arabic > 3999 {
+func TestPropertiesofConversion(t *testing.T) {
+	assertion := func(arabic uint16) bool {
+		if arabic > 3999 {
 			log.Println(arabic)
 			return true
 		}
@@ -86,7 +85,7 @@ func assertStringEqual(got, want string, t *testing.T) {
 	}
 }
 
-func assertIntEqual(got, want int, t *testing.T) {
+func assertUInt16Equal(got, want uint16, t *testing.T) {
 	t.Helper()
 	if got != want {
 		t.Errorf("got %v wanted %v", got, want)
