@@ -2,7 +2,9 @@ package roman
 
 import (
 	"fmt"
+	"log"
 	"testing"
+	"testing/quick"
 )
 
 var cases = []struct {
@@ -45,8 +47,7 @@ func TestArabicToRoman(t *testing.T) {
 	for _, test := range cases {
 		description := fmt.Sprintf("%v to %q", test.Arabic, test.Roman)
 		t.Run(description, func(t *testing.T) {
-			got := arabicToRoman(test.Arabic)
-
+			got := ArabicToRoman(test.Arabic)
 			assertStringEqual(got, test.Roman, t)
 		})
 	}
@@ -55,10 +56,26 @@ func TestRomanToArabic(t *testing.T) {
 	for _, test := range cases[:4] {
 		description := fmt.Sprintf("%v to %q", test.Arabic, test.Roman)
 		t.Run(description, func(t *testing.T) {
-			got := romanToArabic(test.Roman)
-
+			got := RomanToArabic(test.Roman)
 			assertIntEqual(got, test.Arabic, t)
 		})
+	}
+}
+
+func TestConversionProperties(t *testing.T) {
+	assertion := func(arabic int) bool {
+
+		if arabic < 0 || arabic > 3999 {
+			log.Println(arabic)
+			return true
+		}
+		roman := ArabicToRoman(arabic)
+		fromRoman := RomanToArabic(roman)
+		return arabic == fromRoman
+	}
+
+	if err := quick.Check(assertion, nil); err != nil {
+		t.Error("failed checks", err)
 	}
 }
 
