@@ -20,6 +20,7 @@ func TestRomanConverter(t *testing.T) {
 		{"3 to III",
 			3, "III"},
 		{"4 to IV", 4, "IV"},
+		{"5 to V", 5, "V"},
 	}
 
 	for _, test := range cases {
