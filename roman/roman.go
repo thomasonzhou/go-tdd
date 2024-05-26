@@ -1,10 +1,16 @@
 package roman
 
-func intToRoman(num int) (roman string) {
-	if num <= 3 {
-		for i := 0; i < num; i++ {
-			roman += "I"
+import "strings"
+
+func intToRoman(arabicNum int) string {
+
+	var result strings.Builder
+	for i := arabicNum; i > 0; i-- {
+		if arabicNum == 4 {
+			result.WriteString("IV")
+			break
 		}
+		result.WriteString("I")
 	}
-	return roman
+	return result.String()
 }
