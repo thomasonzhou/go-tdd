@@ -1,10 +1,10 @@
 package roman
 
-func intToRoman(num int) string {
-	if num == 1 {
-		return "I"
-	} else if num == 2 {
-		return "II"
+func intToRoman(num int) (roman string) {
+	if num <= 3 {
+		for i := 0; i < num; i++ {
+			roman += "I"
+		}
 	}
-	return ""
+	return roman
 }

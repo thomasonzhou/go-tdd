@@ -17,11 +17,14 @@ func TestRomanConverter(t *testing.T) {
 			2,
 			"II",
 		},
+		{"3 to III",
+			3, "III"},
 	}
 
 	for _, test := range cases {
 		t.Run(test.description, func(t *testing.T) {
 			got := intToRoman(test.num)
+
 			assertStringEqual(got, test.want, t)
 		})
 	}
