@@ -9,20 +9,25 @@ type Point struct {
 	X, Y float64
 }
 
-const radsInCircle = 2 * math.Pi
+const (
+	radsInCircle    = 2 * math.Pi
+	secondsInCircle = 60
+	minutesInCircle = 60
+	hoursInCircle   = 12
+)
 
 func secondsToRadians(t time.Time) float64 {
-	return radsInCircle * float64((t.Second())) / 60.0
+	return radsInCircle * float64((t.Second())) / secondsInCircle
 }
 
 func minutesToRadians(t time.Time) float64 {
-	extraAngleFromSeconds := secondsToRadians(t) / 60
-	return radsInCircle*float64((t.Minute()))/60.0 + extraAngleFromSeconds
+	extraAngleFromSeconds := secondsToRadians(t) / minutesInCircle
+	return radsInCircle*float64((t.Minute()))/minutesInCircle + extraAngleFromSeconds
 }
 
 func hoursToRadians(t time.Time) float64 {
-	extraAngleFromMinutes := minutesToRadians(t) / 12
-	return radsInCircle*float64((t.Hour()%12))/12.0 + extraAngleFromMinutes
+	extraAngleFromMinutes := minutesToRadians(t) / hoursInCircle
+	return radsInCircle*float64((t.Hour()%hoursInCircle))/hoursInCircle + extraAngleFromMinutes
 }
 
 func secondsToPoint(t time.Time) Point {
