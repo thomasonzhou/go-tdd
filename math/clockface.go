@@ -9,8 +9,17 @@ type Point struct {
 	X, Y float64
 }
 
+const SecondHandLength = 90
+
+const ClockCenterX = 150
+const ClockCenterY = 150
+
 func SecondHand(tm time.Time) Point {
-	return Point{150, 60}
+	p := secondsToPoint(tm)
+	p = Point{p.X * SecondHandLength, p.Y * SecondHandLength} // Scale
+	p = Point{p.X, -p.Y}                                      // Flip vertically
+	p = Point{p.X + ClockCenterX, p.Y + ClockCenterY}         // Translate to origin
+	return p
 }
 
 func secondsToRadians(tm time.Time) float64 {
