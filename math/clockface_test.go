@@ -1,9 +1,11 @@
-package clockface
+package clockface_test
 
 import (
 	"math"
 	"testing"
 	"time"
+
+	. "github.com/thomasonzhou/go-tdd/math"
 )
 
 func TestSecondsInRadians(t *testing.T) {
@@ -22,7 +24,7 @@ func TestSecondsInRadians(t *testing.T) {
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
 			want := c.angle
-			got := secondsToRadians(c.time)
+			got := SecondsToRadians(c.time)
 
 			if !roughlyEqualFloat64(want, got) {
 				t.Errorf("want %v, got %v", want, got)
@@ -42,7 +44,7 @@ func TestMinutesInRadians(t *testing.T) {
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
 			want := c.angle
-			got := minutesToRadians(c.time)
+			got := MinutesToRadians(c.time)
 
 			if !roughlyEqualFloat64(want, got) {
 				t.Errorf("want %v, got %v", want, got)
@@ -64,7 +66,7 @@ func TestHoursInRadians(t *testing.T) {
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
 			want := c.angle
-			got := hoursToRadians(c.time)
+			got := HoursToRadians(c.time)
 
 			if !roughlyEqualFloat64(want, got) {
 				t.Errorf("want %v, got %v", want, got)
@@ -90,7 +92,7 @@ func TestSecondHandPoint(t *testing.T) {
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
 			want := c.point
-			got := secondsToPoint(c.time)
+			got := SecondsToPoint(c.time)
 
 			if !roughlyEqualPoint(want, got) {
 				t.Errorf("want %v, got %v", want, got)
@@ -110,7 +112,7 @@ func TestMinuteHandPoint(t *testing.T) {
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
 			want := c.point
-			got := minutesToPoint(c.time)
+			got := MinutesToPoint(c.time)
 
 			if !roughlyEqualPoint(want, got) {
 				t.Errorf("want %v, got %v", want, got)
@@ -134,7 +136,7 @@ func TestHourHandPoint(t *testing.T) {
 	for _, c := range cases {
 		t.Run(testName(c.time), func(t *testing.T) {
 			want := c.point
-			got := hoursToPoint(c.time)
+			got := HoursToPoint(c.time)
 
 			if !roughlyEqualPoint(want, got) {
 				t.Errorf("want %v, got %v", want, got)

@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// A cartesian coordinate. Inside this package, positive X is right and positive Y is up
 type Point struct {
 	X, Y float64
 }
@@ -16,32 +17,32 @@ const (
 	hoursInCircle   = 12
 )
 
-func secondsToRadians(t time.Time) float64 {
+func SecondsToRadians(t time.Time) float64 {
 	return radsInCircle * float64((t.Second())) / secondsInCircle
 }
 
-func minutesToRadians(t time.Time) float64 {
-	extraAngleFromSeconds := secondsToRadians(t) / minutesInCircle
+func MinutesToRadians(t time.Time) float64 {
+	extraAngleFromSeconds := SecondsToRadians(t) / minutesInCircle
 	return radsInCircle*float64((t.Minute()))/minutesInCircle + extraAngleFromSeconds
 }
 
-func hoursToRadians(t time.Time) float64 {
-	extraAngleFromMinutes := minutesToRadians(t) / hoursInCircle
+func HoursToRadians(t time.Time) float64 {
+	extraAngleFromMinutes := MinutesToRadians(t) / hoursInCircle
 	return radsInCircle*float64((t.Hour()%hoursInCircle))/hoursInCircle + extraAngleFromMinutes
 }
 
-func secondsToPoint(t time.Time) Point {
-	radians := secondsToRadians(t)
+func SecondsToPoint(t time.Time) Point {
+	radians := SecondsToRadians(t)
 	return radiansToPoint(radians)
 }
 
-func minutesToPoint(t time.Time) Point {
-	radians := minutesToRadians(t)
+func MinutesToPoint(t time.Time) Point {
+	radians := MinutesToRadians(t)
 	return radiansToPoint(radians)
 }
 
-func hoursToPoint(t time.Time) Point {
-	radians := hoursToRadians(t)
+func HoursToPoint(t time.Time) Point {
+	radians := HoursToRadians(t)
 	return radiansToPoint(radians)
 }
 
