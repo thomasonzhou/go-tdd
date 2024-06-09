@@ -1,9 +1,10 @@
-package clockface
+package clockface_test
 
 import (
-	"github.com/thomasonzhou/go-tdd/math/clockface"
 	"testing"
 	"time"
+
+	clockface "hello/math"
 )
 
 func TestSecondHandAtMidnight(t *testing.T) {
