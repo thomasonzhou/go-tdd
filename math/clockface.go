@@ -20,8 +20,17 @@ func minutesToRadians(t time.Time) float64 {
 	return radsInCircle*float64((t.Minute()%60))/60.0 + extraAngleFromSeconds
 }
 
-func secondsToPoint(tm time.Time) Point {
-	radians := secondsToRadians(tm)
+func secondsToPoint(t time.Time) Point {
+	radians := secondsToRadians(t)
+
+	x := math.Sin(radians)
+	y := math.Cos(radians)
+
+	return Point{x, y}
+}
+
+func minutesToPoint(t time.Time) Point {
+	radians := minutesToRadians(t)
 
 	x := math.Sin(radians)
 	y := math.Cos(radians)
