@@ -22,16 +22,15 @@ func minutesToRadians(t time.Time) float64 {
 
 func secondsToPoint(t time.Time) Point {
 	radians := secondsToRadians(t)
-
-	x := math.Sin(radians)
-	y := math.Cos(radians)
-
-	return Point{x, y}
+	return radiansToPoint(radians)
 }
 
 func minutesToPoint(t time.Time) Point {
 	radians := minutesToRadians(t)
+	return radiansToPoint(radians)
+}
 
+func radiansToPoint(radians float64) Point {
 	x := math.Sin(radians)
 	y := math.Cos(radians)
 

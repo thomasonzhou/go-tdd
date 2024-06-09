@@ -8,6 +8,7 @@ import (
 
 const (
 	secondHandLength = 90
+	minuteHandLength = 80
 	clockCenterX     = 150
 	clockCenterY     = 150
 )
@@ -16,6 +17,7 @@ func SVGWriter(w io.Writer, t time.Time) {
 	io.WriteString(w, svgStart)
 	io.WriteString(w, bezel)
 	secondHand(w, t)
+	minuteHand(w, t)
 	io.WriteString(w, svgEnd)
 }
 
@@ -34,6 +36,13 @@ const svgEnd = `</svg>`
 func secondHand(w io.Writer, t time.Time) {
 	p := secondsToPoint(t)
 	p = Point{p.X * secondHandLength, p.Y * secondHandLength} // Scale
+	p = Point{p.X, -p.Y}                                      // Flip vertically
+	p = Point{p.X + clockCenterX, p.Y + clockCenterY}         // Translate to origin
+	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:3px;"/>`, p.X, p.Y)
+}
+func minuteHand(w io.Writer, t time.Time) {
+	p := minutesToPoint(t)
+	p = Point{p.X * minuteHandLength, p.Y * minuteHandLength} // Scale
 	p = Point{p.X, -p.Y}                                      // Flip vertically
 	p = Point{p.X + clockCenterX, p.Y + clockCenterY}         // Translate to origin
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:3px;"/>`, p.X, p.Y)
