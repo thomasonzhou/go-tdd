@@ -50,14 +50,14 @@ func TestSecondHandPoint(t *testing.T) {
 			want := c.point
 			got := secondsToPoint(c.time)
 
-			if !RoughlyEqualPoint(want, got) {
+			if !roughlyEqualPoint(want, got) {
 				t.Errorf("want %v, got %v", want, got)
 			}
 		})
 	}
 }
 
-func RoughlyEqualPoint(p1, p2 Point) bool {
+func roughlyEqualPoint(p1, p2 Point) bool {
 	return roughlyEqualFloat(p1.X, p2.X) && roughlyEqualFloat(p1.Y, p2.Y)
 }
 
