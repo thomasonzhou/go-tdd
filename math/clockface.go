@@ -35,6 +35,11 @@ func minutesToPoint(t time.Time) Point {
 	return radiansToPoint(radians)
 }
 
+func hoursToPoint(t time.Time) Point {
+	radians := hoursToRadians(t)
+	return radiansToPoint(radians)
+}
+
 func radiansToPoint(radians float64) Point {
 	x := math.Sin(radians)
 	y := math.Cos(radians)

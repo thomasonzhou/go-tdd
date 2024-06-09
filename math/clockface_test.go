@@ -119,6 +119,30 @@ func TestMinuteHandPoint(t *testing.T) {
 	}
 }
 
+func TestHourHandPoint(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		point Point
+	}{
+		{simpleTime(0, 0, 0), Point{0, 1}},
+		{simpleTime(12, 0, 0), Point{0, 1}},
+		{simpleTime(24, 0, 0), Point{0, 1}},
+		{simpleTime(6, 0, 0), Point{0, -1}},
+		{simpleTime(4, 30, 0), Point{1 / math.Sqrt(2), -1 / math.Sqrt(2)}},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			want := c.point
+			got := hoursToPoint(c.time)
+
+			if !roughlyEqualPoint(want, got) {
+				t.Errorf("want %v, got %v", want, got)
+			}
+		})
+	}
+}
+
 func roughlyEqualPoint(p1, p2 Point) bool {
 	return roughlyEqualFloat64(p1.X, p2.X) && roughlyEqualFloat64(p1.Y, p2.Y)
 }
