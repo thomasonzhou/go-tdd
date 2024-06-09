@@ -60,12 +60,37 @@ func TestSVGWriterSecondHand(t *testing.T) {
 			xml.Unmarshal(b.Bytes(), &svg)
 
 			if !containsLine(svg.Line, c.line) {
-				t.Errorf("Expected to find the second hand line %+v in SVG %v", c.line, b.String())
+				t.Errorf("Expected to find the second hand line %+v in SVG lines %+v", c.line, svg.Line)
 			}
 		})
 	}
-
 }
+
+// func TestSVGWriterMinuteHand(t *testing.T) {
+// 	cases := []struct {
+// 		time time.Time
+// 		line Line
+// 	}{
+// 		{
+// 			simpleTime(0, 0, 0),
+// 			Line{150, 150, 150, 70},
+// 		},
+// 	}
+
+// 	for _, c := range cases {
+// 		t.Run(testName(c.time), func(t *testing.T) {
+// 			b := bytes.Buffer{}
+// 			clockface.SVGWriter(&b, c.time)
+
+// 			svg := SVG{}
+// 			xml.Unmarshal(b.Bytes(), &svg)
+
+// 			if !containsLine(svg.Line, c.line) {
+// 				t.Errorf("Expected to find the minute hand line %+v in SVG lines %+v", c.line, svg.Line)
+// 			}
+// 		})
+// 	}
+// }
 
 func containsLine(lines []Line, want Line) bool {
 	for _, line := range lines {
