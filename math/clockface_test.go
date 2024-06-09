@@ -30,6 +30,26 @@ func TestSecondsInRadians(t *testing.T) {
 		})
 	}
 }
+func TestMinutesInRadians(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		angle float64
+	}{
+		{simpleTime(0, 30, 0), math.Pi},
+		{simpleTime(0, 0, 7), 7 * (math.Pi / (60 * 30))},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			want := c.angle
+			got := minutesToRadians(c.time)
+
+			if !roughlyEqualFloat(want, got) {
+				t.Errorf("want %v, got %v", want, got)
+			}
+		})
+	}
+}
 
 func roughlyEqualFloat(want, got float64) bool {
 	const margin = 1e-9
