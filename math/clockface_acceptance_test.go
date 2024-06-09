@@ -33,22 +33,53 @@ type Line struct {
 }
 
 func TestSVGWriterSecondHand(t *testing.T) {
-
-	tm := time.Date(2024, time.October, 14, 0, 0, 0, 0, time.UTC)
-
-	b := bytes.Buffer{}
-	clockface.SVGWriter(&b, tm)
-
-	svg := SVG{}
-	xml.Unmarshal(b.Bytes(), &svg)
-
-	want := Line{150, 150, 150, 60}
-
-	for _, line := range svg.Line {
-		if line == want {
-			return
-		}
+	cases := []struct {
+		time time.Time
+		line Line
+	}{
+		{
+			simpleTime(0, 0, 0),
+			Line{150, 150, 150, 60},
+		},
+		{
+			simpleTime(0, 0, 30),
+			Line{150, 150, 150, 240},
+		},
+		{
+			simpleTime(0, 0, 45),
+			Line{150, 150, 60, 150},
+		},
 	}
 
-	t.Errorf("Expected to find the second hand line %+v in SVG %v", want, b.String())
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			b := bytes.Buffer{}
+			clockface.SVGWriter(&b, c.time)
+
+			svg := SVG{}
+			xml.Unmarshal(b.Bytes(), &svg)
+
+			if !containsLine(svg.Line, c.line) {
+				t.Errorf("Expected to find the second hand line %+v in SVG %v", c.line, b.String())
+			}
+		})
+	}
+
+}
+
+func containsLine(lines []Line, want Line) bool {
+	for _, line := range lines {
+		if line == want {
+			return true
+		}
+	}
+	return false
+}
+
+func simpleTime(h, m, s int) time.Time {
+	return time.Date(2024, time.October, 14, h, m, s, 0, time.UTC)
+}
+
+func testName(t time.Time) string {
+	return t.Format("15:04:05")
 }
