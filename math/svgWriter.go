@@ -34,16 +34,17 @@ const bezel = `<circle cx="150" cy="150" r="100" style="fill:#fff;stroke:#000;st
 const svgEnd = `</svg>`
 
 func secondHand(w io.Writer, t time.Time) {
-	p := secondsToPoint(t)
-	p = Point{p.X * secondHandLength, p.Y * secondHandLength} // Scale
-	p = Point{p.X, -p.Y}                                      // Flip vertically
-	p = Point{p.X + clockCenterX, p.Y + clockCenterY}         // Translate to origin
+	p := makeHand(secondsToPoint(t), secondHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:3px;"/>`, p.X, p.Y)
 }
+
+func makeHand(p Point, length float64) Point {
+	p = Point{p.X * length, p.Y * length}             // Scale
+	p = Point{p.X, -p.Y}                              // Flip vertically
+	p = Point{p.X + clockCenterX, p.Y + clockCenterY} // Translate to origin
+	return p
+}
 func minuteHand(w io.Writer, t time.Time) {
-	p := minutesToPoint(t)
-	p = Point{p.X * minuteHandLength, p.Y * minuteHandLength} // Scale
-	p = Point{p.X, -p.Y}                                      // Flip vertically
-	p = Point{p.X + clockCenterX, p.Y + clockCenterY}         // Translate to origin
+	p := makeHand(minutesToPoint(t), minuteHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:3px;"/>`, p.X, p.Y)
 }
