@@ -9,6 +9,7 @@ import (
 const (
 	secondHandLength = 90
 	minuteHandLength = 80
+	hourHandLength   = 50
 	clockCenterX     = 150
 	clockCenterY     = 150
 )

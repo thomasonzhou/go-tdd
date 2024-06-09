@@ -24,7 +24,7 @@ func TestSecondsInRadians(t *testing.T) {
 			want := c.angle
 			got := secondsToRadians(c.time)
 
-			if !roughlyEqualFloat(want, got) {
+			if !roughlyEqualFloat64(want, got) {
 				t.Errorf("want %v, got %v", want, got)
 			}
 		})
@@ -44,14 +44,36 @@ func TestMinutesInRadians(t *testing.T) {
 			want := c.angle
 			got := minutesToRadians(c.time)
 
-			if !roughlyEqualFloat(want, got) {
+			if !roughlyEqualFloat64(want, got) {
+				t.Errorf("want %v, got %v", want, got)
+			}
+		})
+	}
+}
+func TestHoursInRadians(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		angle float64
+	}{
+		{simpleTime(6, 0, 0), math.Pi},
+		{simpleTime(0, 0, 0), 0},
+		{simpleTime(21, 0, 0), math.Pi * 3 / 2},
+		{simpleTime(0, 1, 30), (2 * math.Pi) / ((12 * 60 * 60) / 90)},
+	}
+
+	for _, c := range cases {
+		t.Run(testName(c.time), func(t *testing.T) {
+			want := c.angle
+			got := hoursToRadians(c.time)
+
+			if !roughlyEqualFloat64(want, got) {
 				t.Errorf("want %v, got %v", want, got)
 			}
 		})
 	}
 }
 
-func roughlyEqualFloat(want, got float64) bool {
+func roughlyEqualFloat64(want, got float64) bool {
 	const margin = 1e-9
 	return math.Abs(want-got) < margin
 }
@@ -98,7 +120,7 @@ func TestMinuteHandPoint(t *testing.T) {
 }
 
 func roughlyEqualPoint(p1, p2 Point) bool {
-	return roughlyEqualFloat(p1.X, p2.X) && roughlyEqualFloat(p1.Y, p2.Y)
+	return roughlyEqualFloat64(p1.X, p2.X) && roughlyEqualFloat64(p1.Y, p2.Y)
 }
 
 func simpleTime(hours, minutes, seconds int) time.Time {
