@@ -4,6 +4,7 @@ import (
 	"embed"
 	"html/template"
 	"io"
+	"strings"
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
@@ -41,11 +42,15 @@ func NewPostRenderer() (*PostRenderer, error) {
 }
 
 func (r *PostRenderer) Render(w io.Writer, p Post) error {
+	return r.templ.ExecuteTemplate(w, "blog.gohtml", newViewModel(p, r))
+}
 
-	if err := r.templ.ExecuteTemplate(w, "blog.gohtml", newViewModel(p, r)); err != nil {
-		return err
-	}
-	return nil
+func (r *PostRenderer) RenderIndex(w io.Writer, posts []Post) error {
+	return r.templ.ExecuteTemplate(w, "index.gohtml", posts)
+}
+
+func (p Post) SanitisedTitle() string {
+	return strings.ToLower(strings.ReplaceAll(p.Title, " ", "-"))
 }
 
 func newViewModel(p Post, r *PostRenderer) postViewModel {

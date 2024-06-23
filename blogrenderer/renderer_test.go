@@ -36,6 +36,20 @@ A good start would be to drink when you feel *thirsty*.`,
 
 			approvals.VerifyString(t, buf.String())
 		})
+	t.Run("make an index of posts",
+		func(t *testing.T) {
+			buf := bytes.Buffer{}
+			posts := []blogrenderer.Post{
+				{Title: "Post 1"},
+				{Title: "Post 2"},
+			}
+
+			if err := postRenderer.RenderIndex(&buf, posts); err != nil {
+				t.Fatal(err)
+			}
+
+			approvals.VerifyString(t, buf.String())
+		})
 }
 
 func BenchmarkRenderer(b *testing.B) {
