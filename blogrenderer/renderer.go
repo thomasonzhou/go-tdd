@@ -11,8 +11,14 @@ type Post struct {
 }
 
 func Render(buf io.Writer, p Post) error {
+	var tagItems string
+	for _, tag := range p.Tags {
+		tagItems += fmt.Sprintf("<li>%v</li>", tag)
+	}
+
 	_, err := fmt.Fprintf(buf, `<h1>%v</h1>
-<p>%v</p>`,
-		p.Title, p.Description)
+<p>%v</p>
+<ul>%v</ul>`,
+		p.Title, p.Description, tagItems)
 	return err
 }
