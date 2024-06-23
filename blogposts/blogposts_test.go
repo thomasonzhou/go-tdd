@@ -34,12 +34,16 @@ func TestNewBlogPost(t *testing.T) {
 		t.Errorf("want %v, got %v", len(fs), len(posts))
 	}
 
-	got := posts[0]
 	// the reason why this is first is go maps are ordered by key
 	want := blogposts.Post{Title: "The planet is warming up."}
+	got := posts[0]
+	assertPost(t, want, got)
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("want %v, got %v", want, got)
+}
+
+func assertPost(t *testing.T, want blogposts.Post, got blogposts.Post) {
+	t.Helper()
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("wanted %v got %v", want, got)
 	}
-
 }
