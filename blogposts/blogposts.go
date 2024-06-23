@@ -1,12 +1,13 @@
 package blogposts
 
 import (
+	"bufio"
 	"io"
 	"io/fs"
 )
 
 type Post struct {
-	Title string
+	Title, Description string
 }
 
 func NewBlogPost(fileSystem fs.FS) ([]Post, error) {
@@ -36,10 +37,14 @@ func getPost(fileSystem fs.FS, f string) (Post, error) {
 }
 
 func newPost(postFile io.Reader) (Post, error) {
-	postData, err := io.ReadAll(postFile)
-	if err != nil {
-		return Post{}, err
+	scanner := bufio.NewScanner(postFile)
+
+	readLine := func() string {
+		scanner.Scan()
+		return scanner.Text()
 	}
-	postTitle := string(postData)[7:]
-	return Post{Title: postTitle}, nil
+	postTitle := readLine()[7:]
+	postDescription := readLine()[13:]
+
+	return Post{Title: postTitle, Description: postDescription}, nil
 }
