@@ -20,9 +20,11 @@ func (s StubFailingFS) Open(name string) (fs.File, error) {
 func TestNewBlogPost(t *testing.T) {
 	const (
 		firstBody = `Title: Juggle life
-Description: Do things that you like that are difficult`
+Description: Do things that you like that are difficult
+Tags: shower-thoughts`
 		secondBody = `Title: The planet is warming up
-Description: We should bring less things on the planes`
+Description: We should bring less things on the planes
+Tags: climate-change, shower-thoughts`
 	)
 
 	fs := fstest.MapFS{
@@ -41,7 +43,11 @@ Description: We should bring less things on the planes`
 	}
 
 	// the reason why this is first is go maps are ordered by key
-	want := blogposts.Post{Title: "The planet is warming up", Description: "We should bring less things on the planes"}
+	want := blogposts.Post{
+		Title:       "The planet is warming up",
+		Description: "We should bring less things on the planes",
+		Tags:        []string{"climate-change", "shower-thoughts"},
+	}
 	got := posts[0]
 	assertPost(t, want, got)
 
