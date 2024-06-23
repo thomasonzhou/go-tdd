@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"testing"
 
+	approvals "github.com/approvals/go-approval-tests"
 	blogrenderer "github.com/thomasonzhou/go-tdd/blogrenderer"
 )
 
@@ -28,13 +29,6 @@ A good start would be to drink when you feel thirsty.`,
 				t.Fatal(err)
 			}
 
-			want := `<h1>How much is too much?</h1>
-<p>Water consumption optimization</p>
-<ul><li>shower-thoughts</li><li>health</li></ul>`
-			got := buf.String()
-
-			if want != got {
-				t.Errorf("want %v, got %v", want, got)
-			}
+			approvals.VerifyString(t, buf.String())
 		})
 }
