@@ -21,10 +21,20 @@ func TestNewBlogPost(t *testing.T) {
 	const (
 		firstBody = `Title: Juggle life
 Description: Do things that you like that are difficult
-Tags: shower-thoughts`
+Tags: shower-thoughts
+---
+I like this advice because everyone has their own version of it.
+"Do what excites"
+"I took the one less traveled by, And that has made all the difference."
+"Just do it"
+`
 		secondBody = `Title: The planet is warming up
 Description: We should bring less things on the planes
-Tags: climate-change, shower-thoughts`
+Tags: climate-change, shower-thoughts
+---
+What if could fit everything in a carry-on?
+Is it not enough space?
+`
 	)
 
 	fs := fstest.MapFS{
@@ -47,6 +57,8 @@ Tags: climate-change, shower-thoughts`
 		Title:       "The planet is warming up",
 		Description: "We should bring less things on the planes",
 		Tags:        []string{"climate-change", "shower-thoughts"},
+		Body: `What if could fit everything in a carry-on?
+Is it not enough space?`,
 	}
 	got := posts[0]
 	assertPost(t, want, got)
