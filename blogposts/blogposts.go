@@ -49,8 +49,9 @@ func newPost(postFile io.Reader) (Post, error) {
 		scanner.Scan()
 		return strings.TrimPrefix(scanner.Text(), prefix)
 	}
-	title := readLine(titleSeparator)
-	description := readLine(descriptionSeparator)
 
-	return Post{Title: title, Description: description}, nil
+	return Post{
+		Title:       readLine(titleSeparator),
+		Description: readLine(descriptionSeparator),
+	}, nil
 }
