@@ -1,9 +1,7 @@
 package main
 
-type reducer func(n1, n2 int) int
-
-func Reduce(start int, iter []int, reducerFunc reducer) int {
-	total := start
+func Reduce[T any](start T, iter []T, reducerFunc func(T, T) T) T {
+	var total = start
 	for _, i := range iter {
 		total = reducerFunc(total, i)
 	}
