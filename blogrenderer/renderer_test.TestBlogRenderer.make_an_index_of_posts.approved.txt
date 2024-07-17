@@ -1,3 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Same blog same html</title>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Please don't unsubscribe" lang="en"/>
+</head>
+<body>
+<nav role="navigation">
+    <div>
+        <h1>Go Gopher</h1>
+        <ul>
+            <li><a href="/">home</a></li>
+            <li><a href="about">about</a></li>
+            <li><a href="archive">archive</a></li>
+        </ul>
+    </div>
+</nav>
+<main>
+
+
 <ol>
 <li><a href="/post/post-1">Post 1</a></li><li><a href="/post/post-2">Post 2</a></li>
 </ol>
+
+
+</main>
+<footer>
+    <ul>
+        <li><a href="https://www.linkedin.com/in/thomasonzhou/">Linkedin</a></li>
+        <li><a href="https://github.com/thomasonzhou/">GitHub</a></li>
+    </ul>
+</footer>
+</body>
+</html>
+
