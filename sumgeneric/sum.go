@@ -9,20 +9,20 @@ func Reduce[T any](start T, iter []T, reducerFunc func(T, T) T) T {
 }
 
 func Sum(numbers []int) (sum int) {
-	var addInt = func(n1, n2 int) int {
+	addInt := func(n1, n2 int) int {
 		return n1 + n2
 	}
 	return Reduce(0, numbers, addInt)
 }
 
 func SumAllTails(numbersToSum ...[]int) (sums []int) {
-	for _, numbers := range numbersToSum {
-		if len(numbers) == 0 {
-			sums = append(sums, 0)
+	sumTail := func(sums, currArr []int) []int {
+		if len(currArr) == 0 {
+			return append(sums, 0)
 		} else {
-			tail := numbers[1:]
-			sums = append(sums, Sum(tail))
+			tail := currArr[1:]
+			return append(sums, Sum(tail))
 		}
 	}
-	return sums
+	return Reduce(sums, numbersToSum, sumTail)
 }
